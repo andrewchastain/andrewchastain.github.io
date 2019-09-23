@@ -15,12 +15,14 @@
 
 html {
   font-size: 100%;
+	background: $black url(Fire Background.jpg) no-repeat center center fixed;
+	background-size: cover;
+	color: $white;
 }
 
 body {
-	background: $white;
   font: 18px/1.4 $helvetica;
-  color: $darkGray;
+  color: $white;
 }
 
 .container {
