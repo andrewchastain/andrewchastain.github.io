@@ -3,12 +3,10 @@
 #
 
 # Name of your site (displayed in the header)
-name: Andrew Chastain
+name: Andrew Chastain's Portfolio
 
 # Short bio or description (displayed in the header)
-description: >- # this means to ignore newlines until "baseurl:"
-  This is the Github page for Andrew Chastain's Portfolio. This will contain my 
-  projects in R relating to data science and analytics.
+description: This is the Github page for my projects in R relating to data science and analytics.
   
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars2.githubusercontent.com/u/17074220?s=400&u=2778790ef1f7b2e51cfe325bef8f97cfef22f78b&v=4
