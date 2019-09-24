@@ -74,11 +74,11 @@ p {
 }
 
 a {
-  color: $blue;
+  color: $apricot;
   text-decoration: none;
 	cursor: pointer;
   &:hover, &:active {
-    color: $blue;
+    color: $apricot;
   }
 }
 
@@ -207,7 +207,7 @@ img {
 
 .site-description {
   margin: -5px 0 0 0;
-  color: $gray;
+  color: $orange;
   font-size: 16px;
 
   @include mobile {
@@ -216,7 +216,7 @@ img {
 }
 
 nav {
-  float: right;
+  float: center;
   margin-top: 23px; // @TODO: Vertically middle align
   font-family: $helveticaNeue;
   font-size: 18px;
@@ -230,14 +230,14 @@ nav {
 
   a {
     margin-left: 20px;
-    color: $darkGray;
+    color: $orange;
     text-align: right;
     font-weight: 300;
     letter-spacing: 1px;
 
     @include mobile {
       margin: 0 10px;
-      color: $blue;
+      color: $apricot;
     }
   }
 }
@@ -280,7 +280,6 @@ nav {
   margin-top: 50px;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
-//  background-color: $lightGray;
 }
 
 footer {
