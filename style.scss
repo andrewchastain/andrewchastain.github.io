@@ -33,7 +33,7 @@ body {
   max-width: 740px;
   padding: 0 10px;
   width: 100%;
-  background: rbga(255, 83, 73, 0.3);
+  opacity: .8;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -162,7 +162,6 @@ img {
 
 .masthead {
   padding: 20px 0;
-  border-bottom: 1px solid $lightGray;
 
   @include mobile {
     text-align: center;
@@ -202,7 +201,7 @@ img {
   cursor: pointer;
   font-family: $helveticaNeue;
   font-weight: 300;
-  font-size: 28px;
+  font-size: 30px;
   letter-spacing: 1px;
 }
 
@@ -217,7 +216,7 @@ img {
 }
 
 nav {
-  float: center;
+  float: right;
   margin-top: 23px; // @TODO: Vertically middle align
   font-family: $helveticaNeue;
   font-size: 18px;
@@ -249,7 +248,7 @@ nav {
 
 .posts > .post {
   padding-bottom: 2em;
-  border-bottom: 1px solid $lightGray;
+  border-bottom: 1px solid $apricot;
 }
 
 .posts > .post:last-child {
@@ -279,8 +278,8 @@ nav {
 
 .wrapper-footer {
   margin-top: 50px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #orange;
+  border-bottom: 1px solid #orange;
 }
 
 footer {
