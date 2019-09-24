@@ -33,7 +33,9 @@ body {
   max-width: 740px;
   padding: 0 10px;
   width: 100%;
-  opacity: .8;
+  background-color: rgba(0, 0, 0, 0.9);
+	border-left: 2px solid darkred;
+	border-right: 2px solid darkred;
 }
 
 h1, h2, h3, h4, h5, h6 {
