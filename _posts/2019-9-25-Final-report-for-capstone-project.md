@@ -2,7 +2,7 @@
 layout: post
 title: JHU-Coursera Capstone Project Final Report
 author: Andrew Chastain
-date: 8/28/2019
+date: 2019-9-25 12:00:00 -0700
 ---
 # Overview
 
