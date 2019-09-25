@@ -1,14 +1,9 @@
 ---
-title: "JHU-Coursera Capstone Project Final Report"
-author: "Andrew Chastain"
-date: "8/28/2019"
-output: 
-  html_document: 
-    keep_md: yes
+layout: post
+title: JHU-Coursera Capstone Project Final Report
+author: Andrew Chastain
+date: 8/28/2019
 ---
-
-
-
 # Overview
 
 The final project for the Data Science Specialization with Johns Hopkins University and Coursera was to develop a natural language processing (NLP) application that would determine the next word given an input string. This project was a collaboration with SwiftKey, the maker of a similar text prediction algorithm.  
