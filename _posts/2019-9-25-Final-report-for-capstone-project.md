@@ -14,14 +14,22 @@ Natural Language Processing (NLP) is the term used to describe the areas of stud
 
 ### Maximum Likelihood Estimate
 
-The simplest n-gram language model looks at bigram (word pair) frequencies to calculate a "maximum likelihood (ML) estimate." Given a bigram $\text{word}_1\;\text{word}_2$, the maximum likelihood estimate of $\text{word}_2$ is simply the frequency count of the bigram divided by the frequency of $\text{word}_1$. In mathematical notation this would be,  
+The simplest n-gram language model looks at bigram (word pair) frequencies to calculate a "maximum likelihood (ML) estimate." Given a bigram $$ \text{word}_1\;\text{word}_2 $$, the maximum likelihood estimate of $$ \text{word}_2 $$ is simply the frequency count of the bigram divided by the frequency of $$ \text{word}_1 $$. In mathematical notation this would be,  
+
 $$
+\begin{displaymath}
 p_{ML}(\text{word}_2|\text{word}_1)=\frac{count(\text{word}_1\;\text{word}_2)}{count(\text{word}_1)}
+\end{displaymath}
 $$  
+
 This same model can be used with higher order n-grams by breaking the n-gram into a "root" (n-1)-gram (also known as a "history" by some authors) and a terminal word and calculating an ML estimate:  
+
 $$
+\begin{displaymath}
 p_{ML}(w_i|w_{i-n+1}w_{i-n+2} \ldots w_{i-2}w_{i-1}) = p_{ML}(w_i|w_{i-n+1}^{i-1}) =   \frac{count(w_{i-n+1} \ldots w_{i-1}w_i)}{count(w_{i-n+1} \ldots w_{i-1})}
+\end{displaymath}
 $$  
+
 There are two main issues with this model. First, it assumes a zero probability for n-grams that are unseen in the training data. Second, it doesn't incorporate information from lower order n-grams, which is a way of incorporating additional meaning and context. The first issue can be solved using a "smoothing" method, where probability density from seen n-grams is reduced and redistributed. The second issue is able to be solved using methods like interpolation or back-off.
 
 ### Kneser-Ney Probability
@@ -100,24 +108,33 @@ The methodology of splitting with strsplit and using a sliding window for n-gram
 
 Once the corpus was converted to a set of n-grams and the counts of their occurances in the corpus the modified Kneser-Ney smoothing algorithm could be used to calculate the probabilities of each terminal word.  
 
-The modified Kneser-Ney smoothing algorithm hinges on calculating a reduction (a discount) for each measured frequency (similar to Good-Turing discounting), and then moving the lost probability around to account for the uniqueness of a given n-gram. This uniqueness is measured as a "continuation probability," which counts the number of different "histories" a word could have, divided by the total number of unique combinations. Given an n-gram $w_{i-n+1}^{i}=w_{i-n+1}w_{i-n+2} \ldots w_{i-1}w_i$ the probability of $w_i$, given $w_{i-n+1} \ldots w_{i-1}$ (or $w_{i-n+1}^{i-1}$) can be calculated as:  
+The modified Kneser-Ney smoothing algorithm hinges on calculating a reduction (a discount) for each measured frequency (similar to Good-Turing discounting), and then moving the lost probability around to account for the uniqueness of a given n-gram. This uniqueness is measured as a "continuation probability," which counts the number of different "histories" a word could have, divided by the total number of unique combinations. Given an n-gram $$ w_{i-n+1}^{i}=w_{i-n+1}w_{i-n+2} \ldots w_{i-1}w_i $$ the probability of $$ w_i $$, given $$ w_{i-n+1} \ldots w_{i-1} $$ (or $$ w_{i-n+1}^{i-1} $$) can be calculated as:  
+
 $$
+\begin{displaymath}
 p_{KN}(w_i|w_{i-n+1}^{i-1}) = \frac{c(w_{i-n+1}^i) - D(c(w_{i-n+1}^i))}{\sum_{w_i} c(w_{i-n+1}^i)} + \gamma(w_{i-n+1}^{i-1}) p_{KN}(w_i|w_{i-n+2}^{i-1})
+\end{displaymath}
 $$  
-In the above equation $c(w_{i-n+1}^i)$ refers to the count of the n-gram, $D(c(w_{i-n+1}^i))$ refers to the discount function, which depends on the count, $\gamma(w_{i-n+1}^{i-1})$ is the interpolation function that calculates how much of the probability distribution was removed by the discounting, and $p_{KN}(w_i|w_{i-n+2}^{i-1})$ is the "continuation probability". Each will be discussed further below.
+
+In the above equation $$ c(w_{i-n+1}^i) $$ refers to the count of the n-gram, $$ D(c(w_{i-n+1}^i)) $$ refers to the discount function, which depends on the count, $$ \gamma(w_{i-n+1}^{i-1}) $$ is the interpolation function that calculates how much of the probability distribution was removed by the discounting, and $$ p_{KN}(w_i|w_{i-n+2}^{i-1}) $$ is the "continuation probability". Each will be discussed further below.
 
 ### The discounting modification  
 
 Kneser-Ney smoothing was originally formulated to have a single discounting that could be determined from a held-out set of data. As indicated by Chen and Goodman (1999), the performance of the algorithm was improved by creating three different $D(c)$ values. These values are:  
+
 $$
+\begin{displaymath}
 D(c)= \begin{cases}
 0 & \text{if }\; c = 0 \\
 D_1 & \text{if }\; c = 1 \\
 D_2 & \text{if }\; c = 2 \\
 D_{3+} & \text{if }\; c \geq 3
 \end{cases}
+\end{displaymath}
 $$  
+
 where  
+
 $$
 \begin{align}
 Y &= \frac{n_1}{n_1 + 2n_2} \\
@@ -127,29 +144,41 @@ D_{3+} &= 3 + 4Y\frac{n_4}{n_3}
 \end{align}
 $$  
 
-The values of $n_1$ to $n_4$ come from the frequency distribution of counts, such that $n_1$ is the number of n-grams that occur only once in the corpus, $n_2$ occur twice, etc. The derivation for the D values is indicated in the Chen and Goodman paper as coming from Klaus Ries in 1997 in personal communications.  
+The values of $$ n_1 $$ to $$ n_4 $$ come from the frequency distribution of counts, such that $$ n_1 $$ is the number of n-grams that occur only once in the corpus, $$ n_2 $$ occur twice, etc. The derivation for the D values is indicated in the Chen and Goodman paper as coming from Klaus Ries in 1997 in personal communications.  
 
 ### Gamma, the interpolation function  
 
-The function $\gamma(w_{i-n+1}^{i-1})$ determines the amount of the probability distribution that has been removed by the discounting $D(c)$. In the Chen and Goodman paper this is written as:  
+The function $$ \gamma(w_{i-n+1}^{i-1}) $$ determines the amount of the probability distribution that has been removed by the discounting $$ D(c) $$. In the Chen and Goodman paper this is written as:  
+
 $$
+\begin{displaymath}
 \gamma(w_{i-n+1}^{i-1}) = \frac{D_1 N_1(w_{i-n+1}^{i-1}\:\bullet) + D_2 N_2(w_{i-n+1}^{i-1}\:\bullet) + D_{3+} N_{3+}(w_{i-n+1}^{i-1}\:\bullet)} {\sum_{w_i} c(w_{i-n+1}^i)}
-$$  
-where  
-$$
-N_r(w_{i-n+1}^{i-1}\:\bullet) = |\{w_i:c(w_{i-n+1}^{i-1}w_i)=r \}|
+\end{displaymath}
 $$  
 
-In other words, $N_1$ is the count of different words $w_i$ that terminate the root $w_{i-n+1}^{i-1}$ only once. $N_2$ is the count of terminal words that occur twice in training.  
+where  
+
+$$
+\begin{displaymath}
+N_r(w_{i-n+1}^{i-1}\:\bullet) = |\{w_i:c(w_{i-n+1}^{i-1}w_i)=r \}|
+\end{displaymath}
+$$  
+
+In other words, $$ N_1 $$ is the count of different words $$ w_i $$ that terminate the root $$ w_{i-n+1}^{i-1} $$ only once. $$ N_2 $$ is the count of terminal words that occur twice in training.  
 
 ### The continuation probability  
 
 The continuation probability is a lower-order probability distribution that seeks to calculate how "predictive" the start of the n-gram is. The continuation probability is written as such:  
 
+
 $$
+\begin{displaymath}
 p_{KN}(w_i|w_{i-n+2}^{i-1}) = \frac{N_{1+}(\bullet\: w_{i-n+2}^i)}{N_{1+}(\bullet\: w_{i-n+2}^{i-1} \:\bullet)}
+\end{displaymath}
 $$  
+
 where
+
 $$
 \begin{align}
 N_{1+}(\bullet\: w_{i-n+2}^i) &= |\{w_{i-n+1}:c(w_{i-n+1}^i)>0\}| \\
@@ -157,14 +186,18 @@ N_{1+}(\bullet\: w_{i-n+2}^{i-1} \:\bullet) &= |\{(w_{i-n+1},w_{i}):c(w_{i-n+1}^
 \end{align}
 $$
 
-Following the earlier syntax, the numerator is the count of unique words $w_{i-n+1}$ that can precede $w_{i-n+2} \ldots w_i$ while the denominator is the sum of those counts for all words $w_i$.  
+Following the earlier syntax, the numerator is the count of unique words $$ w_{i-n+1} $$ that can precede $$ w_{i-n+2} \ldots w_i $$ while the denominator is the sum of those counts for all words $$ w_i $$.  
 
 ## Backoff Strategy
 
 One difference between this implementation of the modified Kneser-Ney Smoothing and the one presented in the Chen and Goodman paper is that this implementation treats all n-grams as the highest order n-gram. In the 1999 paper implementations, in sections 4.1.6-7, n-gram levels below the highest are smoothed by using the unique combination counts instead of corpus frequency:  
+
 $$
+\begin{displaymath}
 p_{KN}(w_i|w_{i-n+1}^{i-1}) = \frac{N_{1+}(w_{i-n+1}^i) - D(N_{1+}(w_{i-n+1}^i))}{\sum_{w_i} N_{1+}(w_{i-n+1}^i)} + \gamma(w_{i-n+1}^{i-1}) p_{KN}(w_i|w_{i-n+2}^{i-1})
+\end{displaymath}
 $$  
+
 It was not feasible to develop the lower-order model originally, but it would be interesting to compare the models in this task.  
 
 The brief for this project asked for an application to produce a single word prediction based on an input string. Once $p_{KN}$ values were calculated for each root-term pair it was possible to discard all but the highest probability terminal word. This greatly reduced the size of the database needed to encode a reasonable number of known inputs for each n-gram level from a 5-gram (a 6-gram broken into a root and prediction) down to a unigram (split bigrams) model.  
