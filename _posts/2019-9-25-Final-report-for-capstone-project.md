@@ -14,7 +14,7 @@ Natural Language Processing (NLP) is the term used to describe the areas of stud
 
 ### Maximum Likelihood Estimate
 
-The simplest n-gram language model looks at bigram (word pair) frequencies to calculate a "maximum likelihood (ML) estimate." Given a bigram $$ \text{word}_1\;\text{word}_2 $$, the maximum likelihood estimate of $$ \text{word}_2 $$ is simply the frequency count of the bigram divided by the frequency of $$ \text{word}_1 $$. In mathematical notation this would be,  
+The simplest n-gram language model looks at bigram (word pair) frequencies to calculate a "maximum likelihood (ML) estimate." Given a bigram $$\text{word}_1\;\text{word}_2$$, the maximum likelihood estimate of $$\text{word}_2$$ is simply the frequency count of the bigram divided by the frequency of $$\text{word}_1$$. In mathematical notation this would be,  
 
 $$
 \begin{displaymath}
@@ -186,7 +186,7 @@ N_{1+}(\bullet\: w_{i-n+2}^{i-1} \:\bullet) &= |\{(w_{i-n+1},w_{i}):c(w_{i-n+1}^
 \end{align}
 $$
 
-Following the earlier syntax, the numerator is the count of unique words $$ w_{i-n+1} $$ that can precede $$ w_{i-n+2} \ldots w_i $$ while the denominator is the sum of those counts for all words $$ w_i $$.  
+Following the earlier syntax, the numerator is the count of unique words $$w_{i-n+1}$$ that can precede $$w_{i-n+2} \ldots w_i$$ while the denominator is the sum of those counts for all words $$w_i$$.  
 
 ## Backoff Strategy
 
@@ -200,6 +200,6 @@ $$
 
 It was not feasible to develop the lower-order model originally, but it would be interesting to compare the models in this task.  
 
-The brief for this project asked for an application to produce a single word prediction based on an input string. Once $p_{KN}$ values were calculated for each root-term pair it was possible to discard all but the highest probability terminal word. This greatly reduced the size of the database needed to encode a reasonable number of known inputs for each n-gram level from a 5-gram (a 6-gram broken into a root and prediction) down to a unigram (split bigrams) model.  
+The brief for this project asked for an application to produce a single word prediction based on an input string. Once $$p_{KN}$$ values were calculated for each root-term pair it was possible to discard all but the highest probability terminal word. This greatly reduced the size of the database needed to encode a reasonable number of known inputs for each n-gram level from a 5-gram (a 6-gram broken into a root and prediction) down to a unigram (split bigrams) model.  
 
-By calculating the $p_{KN}$ and creating a master look-up table ahead of time, the Shiny.io application was able to be very simple - after cleaning the input string it would look up the last five words. If it found a prediction, it would return it; otherwise, it would chop off the first word and run it again. If it recursed down to the unigram model and didn't find a match, it would return "the," the most common word in the corpus. 
+By calculating the $$p_{KN}$$ and creating a master look-up table ahead of time, the Shiny.io application was able to be very simple - after cleaning the input string it would look up the last five words. If it found a prediction, it would return it; otherwise, it would chop off the first word and run it again. If it recursed down to the unigram model and didn't find a match, it would return "the," the most common word in the corpus. 
