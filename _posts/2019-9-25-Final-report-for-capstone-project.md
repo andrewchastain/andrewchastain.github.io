@@ -1,12 +1,10 @@
 ---
 layout: post
-title: JHU-Coursera Capstone Project Final Report
+title: Data Science Specialization Capstone Final Report
 author: Andrew Chastain
 date: 2019-9-25 12:00:00 -0700
 ---
-# Overview
-
-The final project for the Data Science Specialization with Johns Hopkins University and Coursera was to develop a natural language processing (NLP) application that would determine the next word given an input string. This project was a collaboration with SwiftKey, the maker of a similar text prediction algorithm.  
+The final project for the Data Science Specialization with Johns Hopkins University and Coursera was to develop a natural language processing (NLP) application that would determine the next word given an input string. This project was a collaboration with SwiftKey, the maker of a similar text prediction algorithm.  See the functioning application at [shinyapps.io](https://andrewchastain.shinyapps.io/NextWord/).
 
 ## Natural Language Processing
 
@@ -20,10 +18,10 @@ $$
 p_{ML}(\text{word}_2\vert\text{word}_1)=\frac{count(\text{word}_1\;\text{word}_2)}{count(\text{word}_1)}
 $$  
 
-This same model can be used with higher order n-grams by breaking the n-gram into a "root" (n-1)-gram (also known as a "history" by some authors) and a terminal word and calculating an ML estimate:  
+This same model can be used with higher order n-grams by breaking the n-gram into a "root" (n-1)-gram (also known as a "history" by some authors) and a terminal word and calculating an ML estimate. As a matter of notation, $$w_{i-n+1}^{i-1}$$ represents the series of words $$w_{i-n+1}w_{i-n+2} \ldots w_{i-2}w_{i-1}$$:  
 
 $$
-p_{ML}(w_i \vert w_{i-n+1}w_{i-n+2} \ldots w_{i-2}w_{i-1}) = p_{ML}(w_i \vert w_{i-n+1}^{i-1}) =   \frac{count(w_{i-n+1} \ldots w_{i-1}w_i)}{count(w_{i-n+1} \ldots w_{i-1})}
+p_{ML}(w_i \vert w_{i-n+1}^{i-1}) = \frac{count(w_{i-n+1}^{i)}{count(w_{i-n+1}^{i-1})}
 $$  
 
 There are two main issues with this model. First, it assumes a zero probability for n-grams that are unseen in the training data. Second, it doesn't incorporate information from lower order n-grams, which is a way of incorporating additional meaning and context. The first issue can be solved using a "smoothing" method, where probability density from seen n-grams is reduced and redistributed. The second issue is able to be solved using methods like interpolation or back-off.
@@ -82,9 +80,11 @@ Since numbers, non-Latin/Common scripts, and weird punctuation/emoticons/control
 
 ### Additional Cleaning
 
-After removing the majority of the bad characters there were still some punctuation and common characters that needed to be removed.  
+While the initial filtering removed most of the problematic documents, there were still issues with punctuation usage and uncommon characters. Punctuation correction and standardization (replacings non-standard apostrophes, converting all dashes to en-dashes, etc.) we done using the function `clean2()` via the `clean_wrapper()` function.
 
-Finally, the corpus comprised of the three sources was run through the function `clean2()` via the `clean_wrapper()` function. This function removed text based emoticons (for example, :-) or :D), coverted smart and alternative apostrophes to ', and handled more complex conversions like removing periods used in abbreviations and removing non-internal apostrophes (remove apostrophes from 'this' but not from isn't). 
+After this cleaning of the punctuation another round of filtering based on characters that weren't in the set `"[A-Za-z,.' <>-]"`.  
+
+Finally, everything was run thought the function `clean3()`, which was designed to handle special contexts such as removing periods used in abbreviations and removing non-internal apostrophes (remove apostrophes from 'this' but not from isn't). This final round of cleaning rendered each "document" as lower-case, stripped of internal punctuation (except contractions), with a single period between sentences.
 
 ### Testing and Validation Sets
 
@@ -96,7 +96,7 @@ While libraries like `quanteda` and `tm` were tested in early development, it ap
 
 To get around limitation in R with regards to memory size, the set of all sentences was split into ten fragments which could then individually be "tokenized" (split into individual words) then recombined into n-grams. The n-grams were made by taking a window of length n, pasting together the words in the window and sliding it along each sentence. Thus each sentence was converted to a list of n-grams. The raw lists of n-grams from each fragment were then grouped and counted, utilizing the speed of `data.tables`. These fragments were then recombined to produce frequency lists for n-grams of length 2 to 6.  
 
-The methodology of splitting with strsplit and using a sliding window for n-gram generation was taken from the `cmscu` package tutorial from [Dave Vinson](https://github.com/DaveVinson/cmscu-tutorial/blob/master/cmscu-tutorial.Rmd). This method avoided the process of creating a document-term matrix and subsequent frequency table that is utilized in `quanteda`.
+The methodology of splitting with strsplit and using a sliding window for n-gram generation was taken from the `cmscu` package tutorial from [Dave Vinson](https://github.com/DaveVinson/cmscu-tutorial/blob/master/cmscu-tutorial.Rmd). This method avoided the process of creating a document-term matrix and subsequent frequency table that is utilized in `quanteda`. The `cmscu` package was considered earlier in development, but the inability to pull a simple list of all of the terms limited its utility in this application.
 
 ## The Modified Kneser-Ney Algorithm
 
@@ -134,7 +134,7 @@ D_{3+} &= 3 + 4Y\frac{n_4}{n_3}
 \end{align}
 $$  
 
-The values of $$ n_1 $$ to $$ n_4 $$ come from the frequency distribution of counts, such that $$ n_1 $$ is the number of n-grams that occur only once in the corpus, $$ n_2 $$ occur twice, etc. The derivation for the D values is indicated in the Chen and Goodman paper as coming from Klaus Ries in 1997 in personal communications.  
+The values of $$ n_1 $$ to $$ n_4 $$ come from the frequency distribution of counts, such that $$ n_1 $$ is the number of n-grams that occur only once in the corpus, $$ n_2 $$ occur twice, etc. The derivation for the D values is indicated in the Chen and Goodman paper as coming from Klaus Ries in 1997 in personal communications. These D values can also be used to optimize the algorithm by utilizing a held-out date set.  
 
 ### Gamma, the interpolation function  
 
@@ -170,7 +170,7 @@ N_{1+}(\bullet\: w_{i-n+2}^{i-1} \:\bullet) &= \vert \{(w_{i-n+1},w_{i}):c(w_{i-
 \end{align}
 $$
 
-Following the earlier syntax, the numerator is the count of unique words $$w_{i-n+1}$$ that can precede $$w_{i-n+2} \ldots w_i$$ while the denominator is the sum of those counts for all words $$w_i$$.  
+Following the earlier syntax, the numerator is the count of unique words $$w_{i-n+1}$$ that can precede $$w_{i-n+2} \ldots w_i$$ while the denominator is the sum of those counts for all words $$w_i$$. What this means is if the shorter root ($$w_{i-n+2}^{i-1}) has a small number of observed terminal words $$w_i$$ then it is more likely that the shorter root is predictive.  
 
 ## Backoff Strategy
 
@@ -184,4 +184,4 @@ It was not feasible to develop the lower-order model originally, but it would be
 
 The brief for this project asked for an application to produce a single word prediction based on an input string. Once $$p_{KN}$$ values were calculated for each root-term pair it was possible to discard all but the highest probability terminal word. This greatly reduced the size of the database needed to encode a reasonable number of known inputs for each n-gram level from a 5-gram (a 6-gram broken into a root and prediction) down to a unigram (split bigrams) model.  
 
-By calculating the $$p_{KN}$$ and creating a master look-up table ahead of time, the Shiny.io application was able to be very simple - after cleaning the input string it would look up the last five words. If it found a prediction, it would return it; otherwise, it would chop off the first word and run it again. If it recursed down to the unigram model and didn't find a match, it would return "the," the most common word in the corpus. 
+By calculating the $$p_{KN}$$ and creating a master look-up table ahead of time, the Shinyapps.io application was able to be very simple - after cleaning the input string it would look up the last five words. If it found a prediction, it would return it; otherwise, it would chop off the first word and run it again. If it recursed down to the unigram model and didn't find a match, it would return "the," the most common word in the corpus. The application can be seen [here](http://andrewchastain.shinyapps.io/NextWord/). The code for the processing can be seen on [Github](http://github.com/andrewchastain/Capstone).
