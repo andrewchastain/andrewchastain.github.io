@@ -21,7 +21,7 @@ $$
 This same model can be used with higher order n-grams by breaking the n-gram into a "root" (n-1)-gram (also known as a "history" by some authors) and a terminal word and calculating an ML estimate. As a matter of notation, $$w_{i-n+1}^{i-1}$$ represents the series of words $$w_{i-n+1}w_{i-n+2} \ldots w_{i-2}w_{i-1}$$:  
 
 $$
-p_{ML}(w_i \vert w_{i-n+1}^{i-1}) = \frac{count(w_{i-n+1}^{i)}{count(w_{i-n+1}^{i-1})}
+p_{ML}(w_i \vert w_{i-n+1}^{i-1}) = \frac{count(w_{i-n+1}^{i})}{count(w_{i-n+1}^{i-1})}
 $$  
 
 There are two main issues with this model. First, it assumes a zero probability for n-grams that are unseen in the training data. Second, it doesn't incorporate information from lower order n-grams, which is a way of incorporating additional meaning and context. The first issue can be solved using a "smoothing" method, where probability density from seen n-grams is reduced and redistributed. The second issue is able to be solved using methods like interpolation or back-off.
