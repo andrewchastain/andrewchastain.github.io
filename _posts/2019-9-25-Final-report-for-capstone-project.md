@@ -4,7 +4,7 @@ title: Data Science Specialization Capstone Final Report
 author: Andrew Chastain
 date: 2019-9-25 12:00:00 -0700
 ---
-The final project for the Data Science Specialization with Johns Hopkins University and Coursera was to develop a natural language processing (NLP) application that would determine the next word given an input string. This project was a collaboration with SwiftKey, the maker of a similar text prediction algorithm.  See the functioning application at [shinyapps.io](https://andrewchastain.shinyapps.io/NextWord/).
+The final project for the Data Science Specialization with Johns Hopkins University and Coursera was to develop a natural language processing (NLP) application that would determine the next word given an input string. This project was a collaboration with SwiftKey, the maker of a similar text prediction algorithm.  See the functioning application at [shinyapps.io](http://andrewchastain.shinyapps.io/NextWord/). The source for this project (and a worked example) can be found on [Github](http://github.com/andrewchastain/Capstone). The source data can be downloaded [here](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip).
 
 ## Natural Language Processing
 
